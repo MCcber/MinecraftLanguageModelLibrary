@@ -1,0 +1,2 @@
+# MinecraftLanguageModelLibrary
+Public class instance used to store output from the Minecraft language server
