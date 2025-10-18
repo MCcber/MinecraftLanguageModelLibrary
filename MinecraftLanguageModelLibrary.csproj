@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <!-- 以下为NuGet包元数据 -->
+    <PackageId>MinecraftLanguageModelLibrary</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Honghuangtaichu</Authors>
+    <Description>Public class instance used to store output from the Minecraft language server</Description>
+    <PackageIcon>command_block.png</PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <None Include="command_block.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>
