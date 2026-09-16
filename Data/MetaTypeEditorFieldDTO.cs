@@ -310,48 +310,54 @@ namespace MinecraftLanguageModelLibrary.Data
             {
                 return;
             }
+
+            SetRequired(source.IsRequired);
+            TypeKind = source.TypeKind;
+            OriginKind = source.OriginKind;
+            Watermark = source.Watermark;
+            Min = source.Min;
+            Max = source.Max;
+            ElementType = source.ElementType;
+            EnumOptionList = source.EnumOptionList;
+            FeatureMap = source.FeatureMap;
+            TemplateReference ??= source.TemplateReference;
+            TypeParameterNameList = source.TypeParameterNameList;
+            Value = source.Value;
+            EnumOptionList = source.EnumOptionList;
+
             if (string.IsNullOrEmpty(FieldName))
             {
                 FieldName = source.FieldName;
             }
-            SetRequired(source.IsRequired);
-            TypeKind = source.TypeKind;
+            if (string.IsNullOrEmpty(ID))
+            {
+                ID = Guid.NewGuid().ToString();
+            }
             if (!string.IsNullOrEmpty(source.TypeName))
             {
                 TypeName ??= source.TypeName;
             }
-            OriginKind = source.OriginKind;
-            if (string.IsNullOrEmpty(ID))
-            {
-                ID = source.ID;
-            }
-            Watermark = source.Watermark;
             if (source.Children is not null)
             {
                 Children = [.. source.Children];
             }
-            Min = source.Min;
-            Max = source.Max;
             // 只填充目标为空的 Path（拷贝构造中"新实例 Path 为空 → 总是复制"也由此覆盖）
             if (Path is null || Path.TargetPath.Length == 0)
             {
                 Path = source.Path;
             }
-            ElementType = source.ElementType;
-            EnumOptionList = source.EnumOptionList;
-            FeatureMap = source.FeatureMap;
             if (source.Items is not null)
             {
                 Items = [.. source.Items];
             }
-            TemplateReference ??= source.TemplateReference;
-            TypeParameterNameList = source.TypeParameterNameList;
-            UnionTypeNameList = source.UnionTypeNameList;
-            Value = source.Value;
-            SelectedUnionItemUpdated = source.SelectedUnionItemUpdated;
-            SelectedEnumItemUpdated = source.SelectedEnumItemUpdated;
-            SelectedUnionChildren = source.SelectedUnionChildren;
-            EnumOptionList = source.EnumOptionList;
+            if (source.UnionTypeNameList is not null)
+            {
+                UnionTypeNameList = [.. source.UnionTypeNameList];
+            }
+            if (source.SelectedUnionChildren is not null)
+            {
+                SelectedUnionChildren = [.. source.SelectedUnionChildren];
+            }
         }
 
         public void SetRequired(bool value)
@@ -374,8 +380,12 @@ namespace MinecraftLanguageModelLibrary.Data
             MetaTypeKind.Float => 0.0f,
             MetaTypeKind.Double => 0.0,
             MetaTypeKind.String => string.Empty,
-            MetaTypeKind.Enum => SelectedEnumOption?.Value?.TypeValue?.LiteralValue?.ToString(),
-            MetaTypeKind.Union => SelectedUnionTypeName?.Value?.TypeValue?.LiteralValue?.ToString(),      // Union 值不在 Value 字段体现
+            MetaTypeKind.Enum =>
+                SelectedEnumOption?.Value?.TypeValue?.LiteralValue?.ToString()
+                ?? SelectedEnumOption?.Value?.LiteralValue?.ToString(),
+            MetaTypeKind.Union =>
+                SelectedUnionTypeName?.Value?.TypeValue?.LiteralValue?.ToString()
+                ?? SelectedUnionTypeName?.Value?.LiteralValue?.ToString(),     // Union 值不在 Value 字段体现
             MetaTypeKind.Struct => null,
             MetaTypeKind.Dispatch => null,
             MetaTypeKind.Reference => Value?.ToString() ?? "",
