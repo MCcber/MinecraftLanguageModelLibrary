@@ -49,6 +49,12 @@ namespace MinecraftLanguageModelLibrary.Data
         public List<Tuple<string, MetaValue>>? TypeParameterNameList { get; set; }
 
         /// <summary>
+        /// 泛型逐层绑定的作用域（仅运行时使用，不参与序列化）
+        /// </summary>
+        [JsonIgnore]
+        public TypeBindingScope? BindingScope { get; set; }
+
+        /// <summary>
         /// 特征表
         /// </summary>
         public Dictionary<string, MetaValue> FeatureMap { get; set; } = [];
